@@ -5,7 +5,7 @@
     export let chat;
     export let targetFriend;
     export let chatBoxView;
-    export let files;
+
 
 
     const dispatch = createEventDispatcher();
@@ -41,7 +41,6 @@
             <i class="fa-solid fa-paperclip"></i>
         </button>
         <input
-            bind:files
             id="fileInput"
             type="file"
             style="position: fixed; top: -100em"

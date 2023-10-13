@@ -12,7 +12,7 @@
     let chatBoxView = 'chat';
     let message;
     let messageSent;
-    let files = [];
+
 
     export const setFriendTyping = (e) => {
         if (e.detail.stopped) {
@@ -56,12 +56,11 @@
             on:btnClick={handleEvent}
             bind:message={message}
             bind:chatBoxView={chatBoxView}
-            bind:files={files}
             chat={chat}
             targetFriend={targetFriend}
         />
         {#if chatBoxView == 'chat'}
-            <ChatEntryBox bind:files={files} bind:this={messageSent} bind:message={message} friendship_id={chat.id}/>
+            <ChatEntryBox bind:this={messageSent} bind:message={message} friendship_id={chat.id}/>
         {:else if chatBoxView == 'emoji'}
             <EmojiSelection on:btnClick={handleEvent} bind:message={message}/>
         {:else if chatBoxView == 'attach'}

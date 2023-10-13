@@ -1,13 +1,18 @@
 <script>
-
+    import { fileStore } from '../../../stores/fileStore';
     export let message;
     export let friendship_id;
-    export let files;
 
     export const stoppedTyping = () => {
         isTyping = false;
         channel.whisper('stopped-typing', {});
     }
+
+    let files;
+
+    fileStore.subscribe((value) => {
+        files = value;
+    });
 
     let isTyping = false;
     let typingTimeout;
