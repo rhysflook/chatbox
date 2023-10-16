@@ -6,7 +6,6 @@ const createChatStore = () => {
     const { subscribe, set, update } = writable({messages: [], message: '', id: null, recipient_id: null});
     return {
         subscribe,
-        set: () => {console.log(this)},
         setChat: (chat => update(() => {
             window.Echo.private(`message.${user.id}`)
             .listen('.message', function (e) {
