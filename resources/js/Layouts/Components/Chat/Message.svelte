@@ -3,6 +3,7 @@
     export let message;
     export let sentByUser;
     export let pic;
+    export let attachments;
 </script>
 
 <div class="message {sentByUser ? 'message-sent' : 'message-recieved'}">
@@ -17,7 +18,16 @@
             <img class="profile-pic user-pic" src="/storage/profile/{pic}" alt="">
         {/if}
     </div>
-    <p class="message-content">{message}</p>
+    <!-- need to make sure I am sanitising the messages on the backend -->
+    <p class="message-content">{@html message}</p>
+    {#if attachments}
+        <div class="sent-imgs {sentByUser ? 'user-pics' : 'friend-pics'}">
+            {#each attachments as img}
+                <img src="storage/{img.file}" alt="" class="sent-img">
+            {/each}
+        </div>
+    {/if}
+
 </div>
 
 <style>
@@ -66,5 +76,22 @@
 
     .friend-pic {
         margin-right: 10px;
+    }
+
+    .sent-imgs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .sent-img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .user-pics {
+        justify-content: end;
     }
 </style>

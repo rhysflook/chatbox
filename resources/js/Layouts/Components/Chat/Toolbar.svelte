@@ -1,8 +1,8 @@
 <script>
     import { createEventDispatcher } from 'svelte';
     import { router } from '@inertiajs/svelte'
+    import { fileStore } from '../../../stores/fileStore';
     export let message;
-    export let chat;
     export let targetFriend;
     export let chatBoxView;
 
@@ -14,7 +14,7 @@
         let toSend = message;
         message = '';
         dispatch('messageSent');
-        router.post('/send-message', {message: toSend, id: chat.id, friend_id: targetFriend.friend_id});
+        router.post('/send-message', {message: toSend, id: chat.id, friend_id: targetFriend.friend_id, files: $fileStore.files});
     }
 
     function triggerEvent(type) {
@@ -26,6 +26,13 @@
         dispatch('btnClick', {
             type: chatBoxView
         });
+    }
+
+    function handleChange(e) {
+        const files = e.target.files;
+        fileStore.resetFileData();
+        fileStore.setFiles(files);
+        console.log(fileStore.files)
     }
 
 </script>
@@ -45,6 +52,8 @@
             type="file"
             style="position: fixed; top: -100em"
             accept="image/png, image/jpeg"
+            multiple
+            on:change={handleChange}
         >
         <button class="chatbox-toolbar-btn btn-m">
             <i class="fa-solid fa-quote-left"></i>
@@ -55,7 +64,8 @@
 </div>
 <style>
     .chatbox-toolbar {
-        height: 28%;
+        /* height: 28%; */
+        height: 50px;
         display: flex;
         justify-content: space-between;
         background-color: var(--border-color);

@@ -1,14 +1,14 @@
 <script>
     import { inertia } from '@inertiajs/svelte'
     import Logo from './Logo.svelte';
-    export let user;
+    import { user } from '../../../stores/userStore';
 </script>
 <div class="navbar">
     <a href="/">
         <Logo />
     </a>
     <div class="nav-items">
-        {#if user}
+        {#if $user}
             <a use:inertia href="/chat" class="nav-item">
                 Chat <i class="fa-regular fa-comment-dots"></i>
             </a>
@@ -16,8 +16,8 @@
                 Friends <i class="fa-solid fa-user-group"></i>
             </a>
         {/if}
-        <a use:inertia href={user ? '/logout' : '/login'} class="nav-item">
-            {user ? 'Logout' : 'Login'} <i class="fa-solid fa-right-from-bracket"></i>
+        <a use:inertia href={$user ? '/logout' : '/login'} class="nav-item">
+            {$user ? 'Logout' : 'Login'} <i class="fa-solid fa-right-from-bracket"></i>
         </a>
         <a use:inertia href="/settings" class="nav-item">
             Settings <i class="fa-solid fa-gear"></i>

@@ -1,23 +1,15 @@
 <script>
     import { fileStore } from '../../../stores/fileStore';
-    export let message;
-    export let friendship_id;
+    import { chatStore } from '../../../stores/chatStore';
 
     export const stoppedTyping = () => {
         isTyping = false;
         channel.whisper('stopped-typing', {});
     }
-
-    let files;
-
-    fileStore.subscribe((value) => {
-        files = value;
-    });
-
     let isTyping = false;
     let typingTimeout;
-    let channel = window.Echo.private(`friendship.${friendship_id}`);
-    let reader = new FileReader();
+    let channel = window.Echo.private(`friendship.${$chatStore.id}`);
+
     function setIsTyping() {
         if (!isTyping) {
             isTyping = true;
@@ -36,36 +28,57 @@
         }, 5000);
     }
 
-</script>
+    function handleInput(e) {
+        setIsTyping();
+    }
 
-<div class="chatbox-container">
-    <textarea
-        class="chatbox-message"
-        id="message-input"
-        bind:value={message}
-        on:keypress={setIsTyping}
-    ></textarea>
-    {#each files as file}
-        {file.name}
-         <img src="{reader.readAsDataURL(file).result ?? ''}" alt="">
-    {/each}
-</div>
+</script>
+    <div class="chatbox-message">
+        <!-- svelte-ignore a11y-no-static-element-interactions -->
+        <div
+            contenteditable="true"
+            class="chatbox-textarea"
+            id="message-input"
+            on:keypress={handleInput}
+            aria-roledescription="message-content"
+        >
+            {$chatStore.message}
+        </div>
+        <div class="selected-imgs">
+            {#each $fileStore.fileData as file}
+                <img src="{file}" alt="" class="selected-img">
+            {/each}
+        </div>
+    </div>
 
 <style>
-    .chatbox-container {
-        height: 67.5%;
-        line-height: 1.4rem;
-    }
+
     .chatbox-message {
-        color: var(--font-color);
-        font-size: 1.4rem;
-        height: 100%;
-        padding: 5px;
-        width: calc(100% - 10px);
-        border: none;
+        height: calc(100% - 50px);
+        overflow-y: auto;
         background-color: var(--main-color);
-        resize: none;
-        overflow-y: scroll;
+
+    }
+    .chatbox-textarea {
+        color: var(--font-color);
+        background-color: var(--main-color);
+        font-size: 1.4rem;
+        width: 100%;
+        border: none;
+        padding: 0;
     }
 
+    .selected-imgs {
+        display: grid;
+        margin: 5px;
+        column-gap: 5px;
+        row-gap: 5px;
+        grid-template-columns: 50px 50px 50px 50px 50px;
+    }
+
+    .selected-img {
+        object-fit: cover;
+        width: 50px;
+        height: 50px;
+    }
 </style>

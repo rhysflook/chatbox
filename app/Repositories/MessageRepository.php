@@ -15,6 +15,6 @@ class MessageRepository extends BaseRepository {
 
     public function findByFriendship($id)
     {
-        return $this->model->query()->with('sender')->where('friendship_id', $id)->orderBy('created_at')->get();
+        return $this->model->query()->with(['sender', 'messageAttachments'])->where('friendship_id', $id)->orderBy('created_at')->get();
     }
 }

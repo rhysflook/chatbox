@@ -1,11 +1,11 @@
 <script>
+    import { user } from '../../../stores/userStore';
+    import { chatStore } from '../../../stores/chatStore';
     import Message from './Message.svelte';
     import Toolbar from './Toolbar.svelte';
     import ChatEntryBox from './ChatEntryBox.svelte';
     import EmojiSelection from './EmojiSelection.svelte';
-
-    export let chat;
-    export let user;
+    console.log($chatStore)
     export let targetFriend;
 
     let nowTypingMessage = "";
@@ -38,10 +38,16 @@
 
 </script>
 <div class="chatbox">
-    <div class="chatbox-display" use:scrollToBottom={chat} id="chat">
-            {#if chat && chat.messages}
-                {#each chat.messages as message}
-                    <Message sender={message.sender.name} message={message.content} sentByUser={message.sender_id == user.id} pic={message.sender.profile_pic}/>
+    <div class="chatbox-display" use:scrollToBottom={$chatStore.messages} id="chat">
+            {#if $chatStore.messages}
+                {#each $chatStore.messages as message}
+                    <Message
+                        sender={message.sender.name}
+                        message={message.content}
+                        sentByUser={message.sender_id == $user.id}
+                        pic={message.sender.profile_pic}
+                        attachments={message.message_attachments}
+                    />
                 {/each}
             {/if}
 
@@ -52,17 +58,15 @@
     </div>
     <div class="chatbox-input">
         <Toolbar
-            on:messageSent={messageSent.stoppedTyping}
             on:btnClick={handleEvent}
             bind:message={message}
             bind:chatBoxView={chatBoxView}
-            chat={chat}
             targetFriend={targetFriend}
         />
         {#if chatBoxView == 'chat'}
-            <ChatEntryBox bind:this={messageSent} bind:message={message} friendship_id={chat.id}/>
+            <ChatEntryBox />
         {:else if chatBoxView == 'emoji'}
-            <EmojiSelection on:btnClick={handleEvent} bind:message={message}/>
+            <EmojiSelection on:btnClick={handleEvent} />
         {:else if chatBoxView == 'attach'}
              <!-- else content here -->
         {/if}
@@ -72,23 +76,27 @@
     .chatbox {
         width: 65%;
         border: 5px solid var(--border-color);
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-rows: auto auto;
+        grid-template-columns: 1fr;
         background-color: var(--secondary-color);
         height: 90%;
     }
 
     .chatbox-display {
-        height: 60%;
+        /* height: auto; */
         padding: 10px;
         overflow: auto;
         background-color: var(--main-color);
         position: relative;
+        min-height: 30%;
     }
 
 
     .chatbox-input {
-        height: 36%;
+        /* height: 36%; */
+        /* max-height: 60%; */
+        overflow: auto;
         border-color: var(--border-color);
     }
 

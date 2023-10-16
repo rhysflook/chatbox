@@ -16,7 +16,7 @@ class MessagesController extends Controller
         $user = Auth::user();
         $friendship = $request->friendship;
         $response = [
-            'user' => $user,
+            'loginUser' => $user,
             'friends' => $friends->getAllFriends(Auth::id()),
             'chat' => [
                 'messages' => $friendship ? $messages->getByFriendship($friendship) : [],
