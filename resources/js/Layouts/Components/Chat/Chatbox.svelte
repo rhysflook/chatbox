@@ -36,7 +36,6 @@
 console.log($chatStore.messages);
 </script>
 <div class="chatbox">
-    {$chatStore.id}
     <div class="chatbox-display" use:scrollToBottom={$chatStore.messages} id="chat">
             {#if $chatStore.messages}
                 {#each $chatStore.messages as message}

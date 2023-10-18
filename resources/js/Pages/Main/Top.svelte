@@ -12,13 +12,14 @@
     export let recipient;
     export let loginUser;
 
-    if (loginUser) {
-        user.login(loginUser);
-    }
+    $: {
+        if (loginUser) {
+            user.login(loginUser);
+        }
 
-    if (chat) {
-        console.log(chat);
-        chatStore.setChat(chat, recipient);
+        if (chat) {
+            chatStore.setChat(chat, recipient);
+        }
     }
 
     let targetFriend = remember(null);

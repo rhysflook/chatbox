@@ -25,6 +25,7 @@ class FriendshipService {
 
     public function getFriend($id) {
         $friendship = $this->repository->find($id);
+        if (!$friendship) return;
         $user_id = Auth::id();
         if ($friendship->sender_id == $user_id) {
             return $friendship->recipient;

@@ -5,12 +5,12 @@
     export let chatBoxView;
 
     function sendMessage() {
-        message = $message;
+        const newMessage = $message;
         $message = '';
         router.post(
             '/send-message',
             {
-                message,
+                message: newMessage,
                 id: $chatStore.id,
                 friend_id: $chatStore.recipient.id,
                 files: $fileStore.files
