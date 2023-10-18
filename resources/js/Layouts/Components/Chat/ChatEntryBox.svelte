@@ -1,6 +1,6 @@
 <script>
     import { fileStore } from '../../../stores/fileStore';
-    import { chatStore } from '../../../stores/chatStore';
+    import { chatStore, message } from '../../../stores/chatStore';
 
     export const stoppedTyping = () => {
         isTyping = false;
@@ -39,6 +39,7 @@
             contenteditable="true"
             class="chatbox-textarea"
             id="message-input"
+            bind:innerHTML={$message}
             on:keypress={handleInput}
             aria-roledescription="message-content"
         >

@@ -5,13 +5,11 @@
     import Toolbar from './Toolbar.svelte';
     import ChatEntryBox from './ChatEntryBox.svelte';
     import EmojiSelection from './EmojiSelection.svelte';
-    console.log($chatStore)
     export let targetFriend;
 
     let nowTypingMessage = "";
     let chatBoxView = 'chat';
     let message;
-    let messageSent;
 
 
     export const setFriendTyping = (e) => {
@@ -35,9 +33,10 @@
     function handleEvent(event) {
         chatBoxView = event.detail.type;
     }
-
+console.log($chatStore.messages);
 </script>
 <div class="chatbox">
+    {$chatStore.id}
     <div class="chatbox-display" use:scrollToBottom={$chatStore.messages} id="chat">
             {#if $chatStore.messages}
                 {#each $chatStore.messages as message}

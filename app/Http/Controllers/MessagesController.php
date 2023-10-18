@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Friendship;
 use App\Services\FriendshipService;
 use App\Services\MessageService;
 use Illuminate\Http\Request;
@@ -22,6 +23,7 @@ class MessagesController extends Controller
                 'messages' => $friendship ? $messages->getByFriendship($friendship) : [],
                 'id' => $friendship
             ],
+            'recipient' => $friends->getFriend($friendship),
         ];
 
         return Inertia::render(

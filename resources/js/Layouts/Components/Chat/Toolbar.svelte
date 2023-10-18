@@ -1,20 +1,19 @@
 <script>
-    import { createEventDispatcher } from 'svelte';
     import { router } from '@inertiajs/svelte'
     import { fileStore } from '../../../stores/fileStore';
-    export let message;
-    export let targetFriend;
+    import { chatStore, message } from '../../../stores/chatStore';
     export let chatBoxView;
 
-
-
-    const dispatch = createEventDispatcher();
-
     function sendMessage() {
-        let toSend = message;
-        message = '';
-        dispatch('messageSent');
-        router.post('/send-message', {message: toSend, id: chat.id, friend_id: targetFriend.friend_id, files: $fileStore.files});
+        router.post(
+            '/send-message',
+            {
+                message: $message,
+                id: $chatStore.id,
+                friend_id: $chatStore.recipient.id,
+                files: $fileStore.files
+            },
+        );
     }
 
     function triggerEvent(type) {

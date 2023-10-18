@@ -25,4 +25,5 @@ class FriendshipRepository extends BaseRepository {
             ->addBinding($user_id)
             ->get();
     }
+
 }

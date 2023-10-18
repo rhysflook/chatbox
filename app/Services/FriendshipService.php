@@ -22,4 +22,14 @@ class FriendshipService {
     {
         return $this->repository->getAllFriends($user_id);
     }
+
+    public function getFriend($id) {
+        $friendship = $this->repository->find($id);
+        $user_id = Auth::id();
+        if ($friendship->sender_id == $user_id) {
+            return $friendship->recipient;
+        } else {
+            return $friendship->sender;
+        }
+    }
 }

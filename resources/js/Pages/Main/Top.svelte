@@ -9,6 +9,7 @@
 
     export let friends;
     export let chat;
+    export let recipient;
     export let loginUser;
 
     if (loginUser) {
@@ -16,7 +17,8 @@
     }
 
     if (chat) {
-        chatStore.setChat(chat);
+        console.log(chat);
+        chatStore.setChat(chat, recipient);
     }
 
     let targetFriend = remember(null);
