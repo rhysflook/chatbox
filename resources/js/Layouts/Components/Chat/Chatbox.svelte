@@ -33,7 +33,6 @@
     function handleEvent(event) {
         chatBoxView = event.detail.type;
     }
-console.log($chatStore.messages);
 </script>
 <div class="chatbox">
     <div class="chatbox-display" use:scrollToBottom={$chatStore.messages} id="chat">

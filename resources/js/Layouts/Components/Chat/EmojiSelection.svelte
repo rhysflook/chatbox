@@ -1,15 +1,11 @@
 <script>
     import { createEventDispatcher } from 'svelte';
-    export let message;
+    import { chatStore } from '../../../stores/chatStore'
 
     const dispatch = createEventDispatcher();
     function setEmoji(event) {
         if (event.target.nodeName == 'P') {
-            if (message == undefined) {
-                message = event.target.innerText;
-            } else {
-                message = message + event.target.innerText;
-            }
+
             dispatch('btnClick', {type: 'chat'});
         }
     }
@@ -123,7 +119,10 @@
 </div>
 <style>
     .emoji-container {
-        height: 67.5%;
+        overflow-y: auto;
+        height: calc(100% - 50px);
+        background-color: var(--main-color);
+
     }
 
     .emoji-list {
@@ -134,8 +133,6 @@
         padding: 5px;
         width: calc(100% - 10px);
         border: none;
-        background-color: var(--main-color);
-        overflow: auto;
         cursor: default;
         user-select: none;
     }

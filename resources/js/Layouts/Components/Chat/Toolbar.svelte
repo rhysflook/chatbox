@@ -5,20 +5,24 @@
     export let chatBoxView;
 
     function sendMessage() {
-        const newMessage = $message;
-        $message = '';
         router.post(
             '/send-message',
             {
-                message: newMessage,
+                message: $message,
                 id: $chatStore.id,
                 friend_id: $chatStore.recipient.id,
                 files: $fileStore.files
             },
         );
+        $message = '';
+        fileStore.resetFileData();
     }
 
     function triggerEvent(type) {
+        if (type == 'emoji') {
+            chatStore.setRange(document.getSelection().getRangeAt(0));
+            console.log($chatStore.range);
+        }
         if (type == chatBoxView) {
             chatBoxView = 'chat';
         } else {
@@ -33,14 +37,13 @@
         const files = e.target.files;
         fileStore.resetFileData();
         fileStore.setFiles(files);
-        console.log(fileStore.files)
     }
 
 </script>
 <div class="chatbox-toolbar">
     <div>
         <button class="chatbox-toolbar-btn btn-m" on:click={() => triggerEvent('emoji')}>
-            <i class="fa-regular {chatBoxView == 'emoji' ? 'fa-xmark' : 'fa-face-smile'}"></i>
+            <i class="{chatBoxView == 'emoji' ? 'fa-solid fa-xmark' : 'fa-regular fa-face-smile'}"></i>
         </button>
         <button
             class="chatbox-toolbar-btn btn-m"
