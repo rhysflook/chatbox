@@ -1,21 +1,12 @@
 <script>
     import { router } from '@inertiajs/svelte'
-    import { createEventDispatcher } from 'svelte';
 
     export let friends;
 
-    const dispatch = createEventDispatcher();
-
     function getChatHistory(friend) {
         router.get(`/chat?friendship=${friend.id}`);
-        window.Echo.private(`friendship.${friend.id}`)
-            .listenForWhisper( 'typing', e => {
-                dispatch('friendTyping', {stopped: false});
-            }
-            ).listenForWhisper('stopped-typing', e => {
-                dispatch('friendTyping', {stopped: true});
-            });
     }
+
 </script>
 <div class="friendlist">
     {#each friends as friend}

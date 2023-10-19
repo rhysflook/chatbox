@@ -6,6 +6,7 @@
         isTyping = false;
         channel.whisper('stopped-typing', {});
     }
+
     let isTyping = false;
     let typingTimeout;
     let channel = window.Echo.private(`friendship.${$chatStore.id}`);
