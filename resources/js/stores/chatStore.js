@@ -1,9 +1,9 @@
 import { get, writable } from 'svelte/store';
 import { user } from './userStore';
-const message = writable('');
 
+const message = writable('');
 const createChatStore = () => {
-    const { subscribe, set, update } = writable({messages: [], message: '', id: null, recipient: null, chatBoxView: 'chat'});
+    const { subscribe, set, update } = writable({messages: [], id: null, recipient: null, whisperChannel: null, friendTyping: ""});
     return {
         subscribe,
         setChat: ((chat, recipient) => update(() => {
@@ -11,7 +11,16 @@ const createChatStore = () => {
             .listen('.message', function (e) {
                 update(() => ({...chat, messages: [...chat.messages, e.message]}));
             });
-            return {...chat, message: '', recipient, chatBoxView: 'chat'}
+
+            const whisperChannel = window.Echo.private(`friendship.${chat.id}`);
+            whisperChannel.listenForWhisper( 'typing', e => {
+                update(() => ({...chat, friendTyping: `${chat.recipient.name} is typing a message...` }));
+            }
+            ).listenForWhisper('stopped-typing', e => {
+                update(() => ({...chat, friendTyping: ""}));
+            });
+
+            return {...chat, friendTyping: "", recipient, whisperChannel}
         })),
     }
 }

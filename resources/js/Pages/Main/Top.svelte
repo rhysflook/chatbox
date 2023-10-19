@@ -21,17 +21,10 @@
             chatStore.setChat(chat, recipient);
         }
     }
-
-    let targetFriend = remember(null);
-    let friendHelper;
-
-
-
-
 </script>
 <NavBar />
 <Container>
 
-   <FriendList friends={friends} on:friendTyping={friendHelper.setFriendTyping} bind:targetFriend={targetFriend}/>
-   <Chatbox chat={chat} bind:targetFriend={targetFriend} bind:this={friendHelper}/>
+   <FriendList friends={friends} />
+   <Chatbox />
 </Container>

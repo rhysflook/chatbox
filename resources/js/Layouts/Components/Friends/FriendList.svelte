@@ -3,12 +3,10 @@
     import { createEventDispatcher } from 'svelte';
 
     export let friends;
-    export let targetFriend;
 
     const dispatch = createEventDispatcher();
 
     function getChatHistory(friend) {
-        targetFriend = friend;
         router.get(`/chat?friendship=${friend.id}`);
         window.Echo.private(`friendship.${friend.id}`)
             .listenForWhisper( 'typing', e => {

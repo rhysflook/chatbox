@@ -4,21 +4,6 @@
     import Message from './Message.svelte';
     import Toolbar from './Toolbar.svelte';
     import ChatEntryBox from './ChatEntryBox.svelte';
-    import EmojiSelection from './EmojiSelection.svelte';
-    export let targetFriend;
-
-    let nowTypingMessage = "";
-    let message;
-
-
-    export const setFriendTyping = (e) => {
-        if (e.detail.stopped) {
-            nowTypingMessage = "";
-        } else {
-            nowTypingMessage = `${targetFriend.friend} is typing a message...`;
-        }
-    }
-
 
     function scrollToBottom(ele) {
         const scroll = () => ele.scroll({
@@ -28,10 +13,6 @@
 
         return { update: scroll }
     };
-
-    function handleEvent(event) {
-        $chatStore.chatBoxView = event.detail.type;
-    }
 
 </script>
 <div class="chatbox">
@@ -49,15 +30,12 @@
             {/if}
 
         <p class="typing-message">
-            {nowTypingMessage}
+            {$chatStore.friendTyping}
         </p>
 
     </div>
     <div class="chatbox-input">
-        <Toolbar
-            on:btnClick={handleEvent}
-            bind:message={message}
-        />
+        <Toolbar />
             <ChatEntryBox />
     </div>
 </div>
