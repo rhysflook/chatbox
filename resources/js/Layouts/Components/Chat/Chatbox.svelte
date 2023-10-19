@@ -8,7 +8,6 @@
     export let targetFriend;
 
     let nowTypingMessage = "";
-    let chatBoxView = 'chat';
     let message;
 
 
@@ -31,7 +30,7 @@
     };
 
     function handleEvent(event) {
-        chatBoxView = event.detail.type;
+        $chatStore.chatBoxView = event.detail.type;
     }
 </script>
 <div class="chatbox">
@@ -57,16 +56,8 @@
         <Toolbar
             on:btnClick={handleEvent}
             bind:message={message}
-            bind:chatBoxView={chatBoxView}
-            targetFriend={targetFriend}
         />
-        {#if chatBoxView == 'chat'}
             <ChatEntryBox />
-        {:else if chatBoxView == 'emoji'}
-            <EmojiSelection on:btnClick={handleEvent} />
-        {:else if chatBoxView == 'attach'}
-             <!-- else content here -->
-        {/if}
     </div>
 </div>
 <style>
@@ -76,6 +67,7 @@
         display: grid;
         grid-template-rows: auto auto;
         grid-template-columns: 1fr;
+        position: relative;
         background-color: var(--secondary-color);
         height: 90%;
     }

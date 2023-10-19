@@ -2,7 +2,10 @@
     import { router } from '@inertiajs/svelte'
     import { fileStore } from '../../../stores/fileStore';
     import { chatStore, message } from '../../../stores/chatStore';
+    import EmojiSelection from './EmojiSelection.svelte';
     export let chatBoxView;
+
+    let selectingEmoji = false;
 
     function sendMessage() {
         router.post(
@@ -18,19 +21,15 @@
         fileStore.resetFileData();
     }
 
-    function triggerEvent(type) {
-        if (type == 'emoji') {
-            chatStore.setRange(document.getSelection().getRangeAt(0));
-            console.log($chatStore.range);
-        }
-        if (type == chatBoxView) {
-            chatBoxView = 'chat';
-        } else {
-            chatBoxView = type;
-        }
-        dispatch('btnClick', {
-            type: chatBoxView
-        });
+    function showEmojiOptions(event) {
+        selectingEmoji = true;
+        setTimeout(() => {
+            window.addEventListener('click', () => {
+                if (!document.getElementById('emoji-choices').contains(event.target)) {
+                    selectingEmoji = false;
+                }
+            }, {once: true});
+        }, 0)
     }
 
     function handleChange(e) {
@@ -39,10 +38,13 @@
         fileStore.setFiles(files);
     }
 
+
+
+
 </script>
 <div class="chatbox-toolbar">
     <div>
-        <button class="chatbox-toolbar-btn btn-m" on:click={() => triggerEvent('emoji')}>
+        <button class="chatbox-toolbar-btn btn-m" on:click={showEmojiOptions}>
             <i class="{chatBoxView == 'emoji' ? 'fa-solid fa-xmark' : 'fa-regular fa-face-smile'}"></i>
         </button>
         <button
@@ -65,6 +67,9 @@
     </div>
 
     <button on:click={sendMessage} class="chatbox-toolbar-btn btn-l">Send</button>
+    {#if selectingEmoji}
+        <EmojiSelection />
+    {/if}
 </div>
 <style>
     .chatbox-toolbar {

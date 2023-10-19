@@ -1,16 +1,23 @@
 <script>
-    import { createEventDispatcher } from 'svelte';
-    import { chatStore } from '../../../stores/chatStore'
+    import { message } from '../../../stores/chatStore'
 
-    const dispatch = createEventDispatcher();
     function setEmoji(event) {
         if (event.target.nodeName == 'P') {
-
-            dispatch('btnClick', {type: 'chat'});
+            const emoji = event.target.innerText;
+            let range = document.getSelection().getRangeAt(0);
+            const input = document.getElementById('message-input');
+            if (!input.contains(range.startContainer)) {
+                console.log('HERE')
+                message.update(m => m + emoji);
+            } else {
+                range.deleteContents();
+                range.insertNode(document.createTextNode(emoji));
+                range.collapse();
+            }
         }
     }
 </script>
-<div class="emoji-container">
+<div id="emoji-choices" class="emoji-container">
     <div class="emoji-list" on:click={setEmoji}>
         <p class="selection">😀</p>
         <p class="selection">😁</p>
@@ -119,10 +126,14 @@
 </div>
 <style>
     .emoji-container {
+        position: absolute;
         overflow-y: auto;
-        height: calc(100% - 50px);
+        height: 30%;
         background-color: var(--main-color);
-
+        left: 5px;
+        bottom: 5px;
+        width: 50%;
+        border: solid 5px var(--border-color);
     }
 
     .emoji-list {
