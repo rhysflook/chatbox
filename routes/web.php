@@ -27,9 +27,9 @@ Route::get('/users', [UserController::class, 'top'])->name('users.top');
 Route::post('/users', [UserController::class, 'register']);
 Route::post('/trigger_message', function() {});
 Route::get('/login', [UserController::class, 'loginPage']);
-Route::post('/login', [UserController::class, 'login']);
-
-Route::get('/chat', [MessagesController::class, 'chat'])->name('chat');
-Route::post('/send-message', [MessagesController::class, 'send']);
-
-Route::get('/settings', SettingsController::class);
+Route::post('/login', [UserController::class, 'login'])->name('login');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/chat', [MessagesController::class, 'chat'])->name('chat');
+    Route::post('/send-message', [MessagesController::class, 'send']);
+    Route::get('/settings', SettingsController::class);
+});
