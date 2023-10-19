@@ -7,12 +7,12 @@
             let range = document.getSelection().getRangeAt(0);
             const input = document.getElementById('message-input');
             if (!input.contains(range.startContainer)) {
-                console.log('HERE')
                 message.update(m => m + emoji);
             } else {
                 range.deleteContents();
                 range.insertNode(document.createTextNode(emoji));
                 range.collapse();
+                message.update(() => input.innerHTML);
             }
         }
     }

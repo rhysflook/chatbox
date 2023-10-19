@@ -8,6 +8,7 @@
     let selectingEmoji = false;
 
     function sendMessage() {
+        console.log($message);
         router.post(
             '/send-message',
             {
