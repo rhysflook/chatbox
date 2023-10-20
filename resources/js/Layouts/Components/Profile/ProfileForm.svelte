@@ -1,5 +1,5 @@
 <script>
-
+import { router } from "@inertiajs/svelte";
 export let user;
 export let relationship_statuses;
 

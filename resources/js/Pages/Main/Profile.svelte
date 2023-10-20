@@ -26,7 +26,7 @@
     </div>
     <div class="public-details">
         <p class="user-detail">
-            {user.name}
+            {user.username}
         </p>
         <p class="user-detail email">
             {user.email}
