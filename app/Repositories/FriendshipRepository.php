@@ -39,4 +39,23 @@ class FriendshipRepository extends BaseRepository {
         ->get();
     }
 
+    public function checkIfFriend($id)
+    {
+        $user_id = Auth::id();
+        return $this->model->where(function ($query) use ($id, $user_id) {
+            $query->where([
+                'sender_id' => $id,
+                'recipient_id' => $user_id,
+            ]);
+        })
+        ->orWhere(
+            function ($query) use ($id, $user_id) {
+                $query->where([
+                    'sender_id' => $user_id,
+                    'recipient_id' => $id,
+                ]);
+            }
+        )->exists();
+    }
+
 }

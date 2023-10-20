@@ -33,4 +33,9 @@ class FriendshipService {
             return $friendship->sender;
         }
     }
+
+    public function isFriend($id)
+    {
+        return $this->repository->checkIfFriend($id);
+    }
 }
