@@ -17,10 +17,8 @@ class UserController extends Controller
     public function register(CreateUserRequest $request, UserService $service)
     {
         $user = $service->registerUser($request->input());
-
-        if ($user) {
-            return to_route('users.top');
-        }
+        Auth::login($user);
+        return to_route('chat');
     }
 
     public function loginPage()
@@ -35,27 +33,9 @@ class UserController extends Controller
         }
     }
 
-    public function chat(Request $request, FriendshipService $friends, MessageService $messages)
+    public function logout()
     {
-        $user = Auth::user();
-        $friendship = $request->friendship;
-        $response = [
-            'user' => $user,
-            'friends' => $friends->getAllFriends(Auth::id()),
-            'chat' => [
-                'messages' => $friendship ? $messages->getByFriendship($friendship) : [],
-                'id' => $friendship
-            ],
-        ];
-
-        return Inertia::render(
-            'Main/Top',
-            $response
-        );
-    }
-
-    public function send(Request $request, MessageService $messages) {
-        $message = $messages->createMessage(Auth::id(), $request);
-        return to_route('chat', ['friendship' => $request->id]);
+        Auth::logout();
+        return to_route('registration');
     }
 }

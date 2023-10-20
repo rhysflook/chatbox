@@ -10,7 +10,6 @@ class UserService {
     {
         $attributes['password'] = Hash::make($attributes['password']);
         $user = $this->repository->create($attributes);
-        Auth::login($user);
         return $user;
     }
 

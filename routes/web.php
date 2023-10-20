@@ -22,12 +22,11 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('Main/Main', []);
-});
+})->name('registration');
 
 Route::get('/users', [UserController::class, 'top'])->name('users.top');
-Route::post('/users', [UserController::class, 'register']);
-Route::post('/trigger_message', function() {});
-Route::get('/login', [UserController::class, 'loginPage']);
+Route::post('/users', [UserController::class, 'register'])->name('account.create');
+Route::get('/login', [UserController::class, 'loginPage'])->name('login.page');
 Route::post('/login', [UserController::class, 'login'])->name('login');
 Route::middleware(['auth'])->group(function () {
     // Chat page routes
@@ -38,4 +37,6 @@ Route::middleware(['auth'])->group(function () {
     // Profile page routes
     Route::get('/profile', ProfileController::class)->name('profile');
     Route::post('/update-profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
+
+    Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 });

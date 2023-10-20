@@ -2,10 +2,9 @@
     import { router } from '@inertiajs/svelte'
     import LargeLogo from '../../Layouts/Components/Layout/LargeLogo.svelte';
     import NavBar from '../../Layouts/Components/Layout/NavBar.svelte';
-    import FormField from '../../Layouts/Components/Layout/FormField.svelte';
-    import Button from '../../Layouts/Components/Layout/Button.svelte';
+
     let values = {
-        email: null,
+        username: null,
         password: null,
     }
     function handleSubmit(event) {
@@ -18,9 +17,9 @@
         Login
     </LargeLogo>
     <div class="form-container">
-        <form form on:submit|preventDefault={handleSubmit} class="form">
-            <label class="form-label" for="email">Email</label>
-            <input type='email' class="form-input" id="email" bind:value={values.email}/>
+        <form on:submit|preventDefault={handleSubmit} class="form">
+            <label class="form-label" for="username">Username</label>
+            <input type='text' class="form-input" id="username" bind:value={values.username}/>
             <label class="form-label" for="password">Password</label>
             <input type='password' class="form-input" id="password" bind:value={values.password}/>
             <div class="btn-container">
