@@ -13,4 +13,9 @@ class UserService {
         Auth::login($user);
         return $user;
     }
+
+    public function updateProfile($attributes)
+    {
+        $this->repository->update($attributes);
+    }
 }

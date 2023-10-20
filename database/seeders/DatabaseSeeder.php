@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             StatusSeeder::class,
             SettingSeeder::class,
             BaseFriendShipsSeeder::class,
+            RelationshipStatusSeeder::class,
         ]);
     }
 }

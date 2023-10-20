@@ -22,6 +22,9 @@
             <a use:inertia href="/friends" class="nav-item">
                 Friends <i class="fa-solid fa-user-group"></i>
             </a>
+            <a use:inertia href="/profile" class="nav-item">
+                Profile <i class="fa-solid fa-user"></i>
+            </a>
         {/if}
         <a use:inertia href={$user ? '/logout' : '/login'} class="nav-item">
             {$user ? 'Logout' : 'Login'} <i class="fa-solid fa-right-from-bracket"></i>

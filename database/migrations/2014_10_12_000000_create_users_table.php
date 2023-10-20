@@ -18,6 +18,10 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('profile_pic')->nullable()->default('dog.jpg');
+            $table->date('date_of_birth')->nullable();
+            $table->smallInteger('relationship_status')->nullable();
+            $table->text('about')->nullable();
+            $table->boolean('is_visible')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

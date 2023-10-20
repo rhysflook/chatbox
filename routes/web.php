@@ -2,6 +2,7 @@
 
 use App\Events\MessageRecieved;
 use App\Http\Controllers\MessagesController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
 use App\Models\Message;
@@ -29,7 +30,12 @@ Route::post('/trigger_message', function() {});
 Route::get('/login', [UserController::class, 'loginPage']);
 Route::post('/login', [UserController::class, 'login'])->name('login');
 Route::middleware(['auth'])->group(function () {
+    // Chat page routes
     Route::get('/chat', [MessagesController::class, 'chat'])->name('chat');
     Route::post('/send-message', [MessagesController::class, 'send']);
     Route::get('/settings', SettingsController::class);
+
+    // Profile page routes
+    Route::get('/profile', ProfileController::class)->name('profile');
+    Route::post('/update-profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
 });

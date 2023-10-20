@@ -2,6 +2,7 @@
 namespace App\Repositories;
 use App\Models\User;
 use Illuminate\Support\Collection;
+use Auth;
 class UserRepository extends BaseRepository {
    /**
     * UserRepository constructor.
@@ -19,5 +20,10 @@ class UserRepository extends BaseRepository {
     public function all(): Collection
     {
         return $this->model->all();
+    }
+
+    public function update($attributes)
+    {
+        Auth::user()->update($attributes);
     }
 }
