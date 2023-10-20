@@ -53,7 +53,7 @@
         </div>
         <div class=" bottom-margin">
             <label for="is_visible" class="profile-label public-check">Allow other users to see the above details</label>
-            <input type="checkbox" id="is_visible"  bind:value={values.is_visible}>
+            <input type="checkbox" id="is_visible"  bind:checked={values.is_visible}>
         </div>
         <div class="btn-container">
             <button type="submit" class="btn">
