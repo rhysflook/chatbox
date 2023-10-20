@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('friendship_id');
             $table->foreign('friendship_id')->references('id')->on('friendships');
             $table->text('content');
+            $table->boolean('read_flg')->default(false);
             $table->index('sender_id');
             $table->index('recipient_id');
             $table->index('friendship_id');

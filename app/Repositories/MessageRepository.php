@@ -2,6 +2,7 @@
 namespace App\Repositories;
 
 use App\Models\Message;
+use Auth;
 
 class MessageRepository extends BaseRepository {
     public function __construct(Message $model) {
@@ -15,6 +16,12 @@ class MessageRepository extends BaseRepository {
 
     public function findByFriendship($id)
     {
-        return $this->model->query()->with(['sender', 'messageAttachments'])->where('friendship_id', $id)->orderBy('created_at')->get();
+        return $this->model->query()->with(['sender', 'messageAttachments'])->where('friendship_id', $id);
+
+    }
+
+    public function getUnreadCount()
+    {
+        return $this->model->query()->where(['recipient_id' => Auth::id(), 'read_flg' => 0])->count();
     }
 }

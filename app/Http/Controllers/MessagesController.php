@@ -18,12 +18,14 @@ class MessagesController extends Controller
         $friendship = $request->friendship;
         $response = [
             'loginUser' => $user,
+            'recipient' => $friends->getFriend($friendship),
+
             'friends' => $friends->getAllFriends(Auth::id()),
             'chat' => [
                 'messages' => $friendship ? $messages->getByFriendship($friendship) : [],
                 'id' => $friendship
             ],
-            'recipient' => $friends->getFriend($friendship),
+            'total_unread' => $messages->getUnreadCount()
         ];
 
         return Inertia::render(

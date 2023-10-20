@@ -2,6 +2,8 @@
     import { inertia } from '@inertiajs/svelte'
     import Logo from './Logo.svelte';
     import { user } from '../../../stores/userStore';
+
+    export let totalUnread = null;
 </script>
 <div class="navbar">
     <a href="/">
@@ -9,7 +11,12 @@
     </a>
     <div class="nav-items">
         {#if $user}
-            <a use:inertia href="/chat" class="nav-item">
+            <a use:inertia href="/chat" class="nav-item chat-nav">
+                {#if totalUnread}
+                <div class="unread-icon">
+                    <i class="fa-solid fa-envelope icon"></i>{totalUnread}
+                </div>
+                {/if}
                 Chat <i class="fa-regular fa-comment-dots"></i>
             </a>
             <a use:inertia href="/friends" class="nav-item">
@@ -62,5 +69,27 @@
 
     .nav-item:hover {
         color: var(--highlight-color);
+    }
+
+    .chat-nav {
+        position: relative;
+    }
+
+    .unread-icon {
+        background-color: var(--border-color);
+        color: var(--secondary-color);
+        position: absolute;
+        right: -5px;
+        top: -10px;
+        z-index: 99;
+        border-radius: 50px;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 5px;
+    }
+    .icon {
+        margin-right: 3px;
     }
 </style>
