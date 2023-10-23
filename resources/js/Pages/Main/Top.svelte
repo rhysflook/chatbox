@@ -1,5 +1,5 @@
 <script>
-    import { remember } from '@inertiajs/svelte'
+    import { router } from '@inertiajs/svelte'
     import { user } from '../../stores/userStore';
     import { chatStore, joinMessageChannel } from '../../stores/chatStore';
     import NavBar from '../../Layouts/Components/Layout/NavBar.svelte';
@@ -22,8 +22,11 @@
         if (loginUser) {
             user.login(loginUser);
         }
-
         chatStore.setChat(chat, recipient);
+    }
+
+    function getChatHistory(friend) {
+        router.get(`/chat?friend=${friend.username}`);
     }
 
 
@@ -31,6 +34,6 @@
 <NavBar totalUnread={total_unread}/>
 <Container>
 
-   <FriendList friends={friends} />
+   <FriendList friends={friends} friendMethod={getChatHistory} />
    <Chatbox />
 </Container>

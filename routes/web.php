@@ -1,7 +1,9 @@
 <?php
 
 use App\Events\MessageRecieved;
+use App\Http\Controllers\FriendshipController;
 use App\Http\Controllers\MessagesController;
+use App\Http\Controllers\NavbarController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
@@ -37,6 +39,9 @@ Route::middleware(['auth'])->group(function () {
     // Profile page routes
     Route::get('/profile', ProfileController::class)->name('profile');
     Route::post('/update-profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
+
+    // Friends page routes
+    Route::get('/friends', FriendshipController::class)->name('friends');
 
     Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 });

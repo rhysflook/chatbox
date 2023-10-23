@@ -10,7 +10,7 @@ const createChatStore = () => {
         setChat: ((chat, recipient) => update(() => {
             const whisperChannel = window.Echo.private(`friendship.${chat.id}`);
             whisperChannel.listenForWhisper( 'typing', e => {
-                update((chat) => ({...chat, friendTyping: `${recipient.name} is typing a message...` }));
+                update((chat) => ({...chat, friendTyping: `${recipient.username} is typing a message...` }));
             }
             ).listenForWhisper('stopped-typing', e => {
                 update((chat) => ({...chat, friendTyping: ""}));

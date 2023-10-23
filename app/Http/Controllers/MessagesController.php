@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Friendship;
+use App\Models\User;
 use App\Services\FriendshipService;
 use App\Services\MessageService;
 use App\Services\ProfileService;
@@ -20,12 +21,12 @@ class MessagesController extends Controller
         $friendship = $recipient ? $friends->getByFriend($recipient->id) : null;
         $response = [
             'loginUser' => $user,
-            'recipient' => $friends->getFriend($friendship->id),
+            'recipient' => $friendship ? $friends->getFriend($friendship->id) : null,
             'recipient_is_friend' => $recipient && $friends->isFriend($recipient->username),
             'friends' => $friends->getAllFriends(Auth::id()),
             'chat' => [
                 'messages' => $friendship ? $messages->getByFriendship($friendship->id) : [],
-                'id' => $friendship->id
+                'id' => $friendship ? $friendship->id : null,
             ],
             'total_unread' => $messages->getUnreadCount()
         ];
@@ -37,7 +38,7 @@ class MessagesController extends Controller
     }
 
     public function send(Request $request, MessageService $messages) {
-        $message = $messages->createMessage(Auth::id(), $request);
-        return to_route('chat', ['friendship' => $request->id]);
+        $messages->createMessage(Auth::id(), $request);
+        return to_route('chat', ['friend' => User::find($request->friend_id)->username]);
     }
 }

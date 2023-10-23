@@ -2,8 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\MessageService;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Auth;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -36,8 +38,13 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $messages = resolve(MessageService::class);
+        if (Auth::user()) {
+            $unread_msg_count = $messages->getUnreadCount();
+        }
         return array_merge(parent::share($request), [
-            //
+            'total_unread' => $unread_msg_count ?? null,
+            'user' => Auth::user(),
         ]);
     }
 }

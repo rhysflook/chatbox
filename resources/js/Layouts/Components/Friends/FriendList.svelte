@@ -1,11 +1,6 @@
 <script>
-    import { router } from '@inertiajs/svelte'
-
     export let friends;
-
-    function getChatHistory(friend) {
-        router.get(`/chat?friendship=${friend.id}`);
-    }
+    export let friendMethod;
 
 </script>
 <div class="friendlist">
@@ -19,7 +14,7 @@
         <div class="pic-container">
             <img class="profile-pic" src="/storage/profile/{friend.pic}" alt="">
         </div>
-        <button class="friend-chat" on:click={getChatHistory(friend)}>{friend.username}</button>
+        <button class="friend-chat" on:click={() => friendMethod(friend)}>{friend.username}</button>
     </div>
     {/each}
 </div>

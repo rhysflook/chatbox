@@ -20,7 +20,7 @@
             {#if $chatStore.messages}
                 {#each $chatStore.messages as message}
                     <Message
-                        sender={message.sender.name}
+                        sender={message.sender.username}
                         message={message.content}
                         sentByUser={message.sender_id == $user.id}
                         pic={message.sender.profile_pic}

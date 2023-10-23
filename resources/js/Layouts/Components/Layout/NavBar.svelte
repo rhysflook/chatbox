@@ -1,21 +1,20 @@
 <script>
-    import { inertia } from '@inertiajs/svelte'
+    import { inertia, page } from '@inertiajs/svelte'
     import Logo from './Logo.svelte';
-    import { user } from '../../../stores/userStore';
 
-    export let totalUnread = null;
+    $: ({user, total_unread} = $page.props);
 </script>
 <div class="navbar">
     <a href="/">
         <Logo />
     </a>
     <div class="nav-items">
-        {#if $user}
+        {#if user}
             <a use:inertia href="/chat" class="nav-item chat-nav">
-                {#if totalUnread}
-                <div class="unread-icon">
-                    <i class="fa-solid fa-envelope icon"></i>{totalUnread}
-                </div>
+                {#if total_unread}
+                    <div class="unread-icon">
+                        <i class="fa-solid fa-envelope icon"></i>{total_unread}
+                    </div>
                 {/if}
                 Chat <i class="fa-regular fa-comment-dots"></i>
             </a>
@@ -26,8 +25,8 @@
                 Profile <i class="fa-solid fa-user"></i>
             </a>
         {/if}
-        <a use:inertia href={$user ? '/logout' : '/login'} class="nav-item">
-            {$user ? 'Logout' : 'Login'} <i class="fa-solid fa-right-from-bracket"></i>
+        <a use:inertia href={user ? '/logout' : '/login'} class="nav-item">
+            {user ? 'Logout' : 'Login'} <i class="fa-solid fa-right-from-bracket"></i>
         </a>
         <a use:inertia href="/settings" class="nav-item">
             Settings <i class="fa-solid fa-gear"></i>
