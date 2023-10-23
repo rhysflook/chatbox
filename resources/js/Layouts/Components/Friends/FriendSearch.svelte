@@ -1,5 +1,17 @@
 <script>
-    import { page } from "@inertiajs/svelte";
+    import { page, router } from "@inertiajs/svelte";
+    let searchTerm;
+    let isTyping;
+    function queryUsers(e) {
+        if (!isTyping) {
+            setTimeout(() => {
+                isTyping = false
+                router.visit(`/friends?search=${searchTerm}`);
+            }, 200);
+        }
+        isTyping = true;
+    }
+
 </script>
 
 <div class="recommended">
@@ -12,13 +24,14 @@
     </div>
 <div class="search-container">
     <div class="input-container">
-        <input type="text" class="user-search">
+        <span class="search-label">User search:</span>
+        <input type="text" class="user-search" bind:value={searchTerm} on:keyup={queryUsers}>
     </div>
     <div class="search-result">
         {#each $page.props.user_search as user}
             <div class="user-result">
                 <img src="/storage/profile/{user.profile_pic}" alt="" class="search-profile-pic">
-                {user.name}
+                {user.name} - {user.username}
             </div>
         {/each}
     </div>
@@ -48,10 +61,20 @@
         height: 10%;
         display: flex;
         align-items: center;
+        justify-content: end;
     }
 
     .user-search {
         height: 80%;
+        border-radius: 10px;
+        padding: 0 5px;
+        font-size: 1.2rem;
+    }
+
+    .search-label {
+        color: var(--main-color);
+        margin-right: 5px;
+        font-size: 1.2rem;
     }
 
     .search-result {
