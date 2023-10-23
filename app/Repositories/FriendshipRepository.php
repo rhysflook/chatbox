@@ -20,7 +20,7 @@ class FriendshipRepository extends BaseRepository {
         ->select(
             'friendships.*',
             'users.id as friend_id',
-            'users.name as friend',
+            'users.username as username',
             'users.profile_pic as pic',
             'messages.unread_count'
         )
@@ -39,7 +39,7 @@ class FriendshipRepository extends BaseRepository {
         ->get();
     }
 
-    public function checkIfFriend($id)
+    public function getByFriend($id)
     {
         $user_id = Auth::id();
         return $this->model->where(function ($query) use ($id, $user_id) {
@@ -55,7 +55,12 @@ class FriendshipRepository extends BaseRepository {
                     'recipient_id' => $id,
                 ]);
             }
-        )->exists();
+        );
+    }
+
+    public function checkIfFriend($id)
+    {
+        $this->getByFriend($id)->exists();
     }
 
 }

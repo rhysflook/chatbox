@@ -8,7 +8,6 @@ const createChatStore = () => {
     return {
         subscribe,
         setChat: ((chat, recipient) => update(() => {
-            console.log(chat);
             const whisperChannel = window.Echo.private(`friendship.${chat.id}`);
             whisperChannel.listenForWhisper( 'typing', e => {
                 update((chat) => ({...chat, friendTyping: `${recipient.name} is typing a message...` }));
@@ -16,7 +15,6 @@ const createChatStore = () => {
             ).listenForWhisper('stopped-typing', e => {
                 update((chat) => ({...chat, friendTyping: ""}));
             });
-            console.log(recipient);
             return {...chat, friendTyping: "", recipient, whisperChannel}
         })),
 
@@ -36,7 +34,6 @@ const joinMessageChannel = () => {
     window.Echo.private(`message.${get(user).id}`)
     .listen('.message', function (e) {
         const chat = get(chatStore);
-        console.log(chat)
         if (chat.recipient && e.message.sender_id == chat.recipient.id) {
             chatStore.handleCurrentConvoMessage(e.message);
         } else {

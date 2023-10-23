@@ -1,4 +1,5 @@
 <script>
+    import { inertia } from '@inertiajs/svelte'
     export let user;
     export let relationship_statuses;
     export let isFriend;
@@ -30,9 +31,11 @@
     {/if}
     <div class="btn-container">
     {#if isFriend}
-        <button class="btn">
-            Send Message
-        </button>
+        <!-- <button class="btn"> -->
+            <a use:inertia href="/chat?friend={user.username}" class="btn">
+                Send Message
+            </a>
+        <!-- </button> -->
     {:else}
         <button class="btn">
             Send Friend Request

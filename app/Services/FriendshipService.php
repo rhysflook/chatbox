@@ -6,7 +6,7 @@ use App\Repositories\FriendshipRepository;
 use Auth;
 
 class FriendshipService {
-    public function __construct(public FriendshipRepository $repository) {}
+    public function __construct(public FriendshipRepository $repository, public ProfileService $profiles) {}
 
     public function makeFriendship($sender_id, $recipient_id)
     {
@@ -34,8 +34,15 @@ class FriendshipService {
         }
     }
 
-    public function isFriend($id)
+    public function getByFriend($id)
     {
+        return $this->repository->getByFriend($id)->first();
+    }
+
+    public function isFriend($name)
+    {
+        $id = $this->profiles->getUser($name)->id;
         return $this->repository->checkIfFriend($id);
     }
+
 }

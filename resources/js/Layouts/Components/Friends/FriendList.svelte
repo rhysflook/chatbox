@@ -19,7 +19,7 @@
         <div class="pic-container">
             <img class="profile-pic" src="/storage/profile/{friend.pic}" alt="">
         </div>
-        <button class="friend-chat" on:click={getChatHistory(friend)}>{friend.friend}</button>
+        <button class="friend-chat" on:click={getChatHistory(friend)}>{friend.username}</button>
     </div>
     {/each}
 </div>

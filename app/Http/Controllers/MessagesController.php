@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Friendship;
 use App\Services\FriendshipService;
 use App\Services\MessageService;
+use App\Services\ProfileService;
 use Illuminate\Http\Request;
 use Auth;
 use Inertia\Inertia;
@@ -12,18 +13,19 @@ use Inertia\Inertia;
 class MessagesController extends Controller
 {
 
-    public function chat(Request $request, FriendshipService $friends, MessageService $messages)
+    public function chat(Request $request, FriendshipService $friends, MessageService $messages, ProfileService $profiles)
     {
         $user = Auth::user();
-        $friendship = $request->friendship;
+        $recipient = $profiles->getUser($request->friend);
+        $friendship = $recipient ? $friends->getByFriend($recipient->id) : null;
         $response = [
             'loginUser' => $user,
-            'recipient' => $friends->getFriend($friendship),
-
+            'recipient' => $friends->getFriend($friendship->id),
+            'recipient_is_friend' => $recipient && $friends->isFriend($recipient->username),
             'friends' => $friends->getAllFriends(Auth::id()),
             'chat' => [
-                'messages' => $friendship ? $messages->getByFriendship($friendship) : [],
-                'id' => $friendship
+                'messages' => $friendship ? $messages->getByFriendship($friendship->id) : [],
+                'id' => $friendship->id
             ],
             'total_unread' => $messages->getUnreadCount()
         ];
