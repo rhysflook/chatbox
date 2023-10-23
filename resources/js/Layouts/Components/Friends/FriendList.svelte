@@ -1,10 +1,10 @@
 <script>
-    export let friends;
+    import { page } from "@inertiajs/svelte";
     export let friendMethod;
 
 </script>
 <div class="friendlist">
-    {#each friends as friend}
+    {#each $page.props.friends as friend}
     <div class="friend-container">
         {#if friend.unread_count}
         <div class="unread-icon">

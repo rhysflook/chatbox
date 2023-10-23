@@ -16,19 +16,15 @@ class MessagesController extends Controller
 
     public function chat(Request $request, FriendshipService $friends, MessageService $messages, ProfileService $profiles)
     {
-        $user = Auth::user();
         $recipient = $profiles->getUser($request->friend);
         $friendship = $recipient ? $friends->getByFriend($recipient->id) : null;
         $response = [
-            'loginUser' => $user,
             'recipient' => $friendship ? $friends->getFriend($friendship->id) : null,
             'recipient_is_friend' => $recipient && $friends->isFriend($recipient->username),
-            'friends' => $friends->getAllFriends(Auth::id()),
             'chat' => [
                 'messages' => $friendship ? $messages->getByFriendship($friendship->id) : [],
                 'id' => $friendship ? $friendship->id : null,
             ],
-            'total_unread' => $messages->getUnreadCount()
         ];
 
         return Inertia::render(

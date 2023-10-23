@@ -17,4 +17,9 @@ class UserService {
     {
         $this->repository->update($attributes);
     }
+
+    public function searchByUsername($username)
+    {
+        return $this->repository->searchNonFriendUsers($username);
+    }
 }
