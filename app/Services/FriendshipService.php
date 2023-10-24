@@ -2,11 +2,16 @@
 namespace App\Services;
 
 use App\Enums\Status;
+use App\Models\User;
 use App\Repositories\FriendshipRepository;
 use Auth;
 
 class FriendshipService {
-    public function __construct(public FriendshipRepository $repository, public ProfileService $profiles) {}
+    public function __construct(
+        public FriendshipRepository $repository,
+        public ProfileService $profiles,
+        public FriendshipStatusService $statuses,
+    ) {}
 
     public function makeFriendship($sender_id, $recipient_id)
     {
@@ -14,8 +19,7 @@ class FriendshipService {
             'sender_id' => $sender_id,
             'recipient_id' => $recipient_id,
         ]);
-        $friendship_status_service = resolve(FriendshipStatusService::class);
-        $friendship_status_service->createStatus($friendship->id, Status::REQUESTED->value, $sender_id);
+        $this->statuses->createStatus($friendship->id, Status::REQUESTED->value, $sender_id);
     }
 
     public function getAllFriends($user_id)
@@ -45,4 +49,29 @@ class FriendshipService {
         return $this->repository->checkIfFriend($id);
     }
 
+    public function getPendingRequests($is_sender=true)
+    {
+        return $this->repository->getPending($is_sender);
+    }
+
+    public function answerFriendRequest($username, $is_accepted)
+    {
+        $user = User::where('username', $username)->first();
+        $friendship = $this->repository->getByFriend(
+            $user->id
+        )->first();
+
+        $status = $is_accepted ? Status::ACCEPTED->value : Status::DECLINED->value;
+        $this->statuses->createStatus($friendship->id, $status, $user->id);
+    }
+
+    public function cancelFriendRequest($user)
+    {
+        $friendship = $this->repository->getByFriend(
+            $user->id
+        )->first();
+
+        $friendship->statuses()->delete();
+        $friendship->delete();
+    }
 }

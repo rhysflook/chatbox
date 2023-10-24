@@ -1,9 +1,10 @@
-<script>
+<script lang="ts">
+    import FriendRequests from "./FriendRequests.svelte";
     import FriendSearch from "./FriendSearch.svelte";
-
     let tab = 'search';
-    function toggleTab(e) {
-        tab = e.target.getAttribute('data-tab');
+    function toggleTab(e: MouseEvent): void {
+        let btn = <HTMLButtonElement>e.target;
+        tab = btn.getAttribute('data-tab') as string;
     }
 </script>
 <div class="interface-container">
@@ -15,7 +16,7 @@
         <FriendSearch />
 
     {:else}
-         <!-- else content here -->
+        <FriendRequests />
     {/if}
 </div>
 

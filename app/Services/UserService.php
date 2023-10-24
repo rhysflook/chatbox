@@ -20,6 +20,7 @@ class UserService {
 
     public function searchByUsername($username)
     {
+        if (!$username) return [];
         return $this->repository->searchNonFriendUsers($username);
     }
 }

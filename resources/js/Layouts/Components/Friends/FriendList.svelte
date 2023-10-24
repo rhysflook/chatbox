@@ -1,10 +1,11 @@
-<script>
+<script lang="ts">
     import { page } from "@inertiajs/svelte";
-    export let friendMethod;
+    import type { Friend } from "../../../types/types";
+    export let friendMethod: (friend: Friend) => void;
 
 </script>
 <div class="friendlist">
-    {#each $page.props.friends as friend}
+    {#each $page.props.friends ?? [] as friend}
     <div class="friend-container">
         {#if friend.unread_count}
         <div class="unread-icon">

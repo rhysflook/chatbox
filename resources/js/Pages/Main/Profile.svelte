@@ -2,7 +2,7 @@
     import NavBar from '../../Layouts/Components/Layout/NavBar.svelte';
     import Container from '../../Layouts/Components/Layout/Container.svelte';
     import ProfileForm from '../../Layouts/Components/Profile/ProfileForm.svelte';
-    import { user as u } from '../../stores/userStore';
+    import { useUser } from '../../stores/userStore';
     import UserProfile from '../../Layouts/Components/Profile/UserProfile.svelte';
     export let user;
     export let total_unread;
@@ -12,7 +12,7 @@
 
     $: {
         if (loginUser) {
-            u.login(loginUser);
+            useUser().login(loginUser);
         }
     }
 

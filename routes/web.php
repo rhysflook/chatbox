@@ -42,6 +42,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Friends page routes
     Route::get('/friends', FriendshipController::class)->name('friends');
+    Route::post('/add-friend', [FriendshipController::class, 'createFriendRequest'])->name('add.friend');
+    Route::post('/answer-friend-request', [FriendshipController::class, 'answerRequest'])->name('answer.friend');
+    Route::delete('/cancel-friend-request/{user}', [FriendshipController::class, 'cancelRequest'])->name('cancel.friend');
 
     Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 });

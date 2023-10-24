@@ -1,29 +1,32 @@
-<script>
-    import {user} from '../../stores/userStore';
+<script lang="ts">
     import NavBar from '../../Layouts/Components/Layout/NavBar.svelte';
     import Container from '../../Layouts/Components/Layout/Container.svelte';
     import FriendList from '../../Layouts/Components/Friends/FriendList.svelte';
     import { router } from '@inertiajs/svelte';
     import FriendInterface from '../../Layouts/Components/Friends/FriendInterface.svelte';
-    export let loginUser;
-    export let friends;
-    export let total_unread
+    import { friendStore } from '../../stores/friendStore';
+    import type { Friend, User } from '../../types/types';
+    import { setCustomWritableContext } from '../../context/context';
 
-    $: {
-        if (loginUser) {
-            user.login(loginUser);
-        }
-    }
+    export let user_search: User[];
+    export let pending_sent: User[];
+    export let pending_received: User[];
 
-    function getFriendProfile(friend)
+    let store = friendStore();
+    setCustomWritableContext('friends', store);
+    $: store.setQueryResult(user_search);
+    $: store.setPendingSent(pending_sent);
+    $: store.setPendingReceived(pending_received);
+
+    function getFriendProfile(friend: Friend)
     {
         router.get('/profile?user=' + friend.username);
     }
 
 </script>
-<NavBar totalUnread={total_unread}/>
+<NavBar />
 <Container>
-    <FriendList {friends} friendMethod={getFriendProfile} />
+    <FriendList friendMethod={getFriendProfile} />
     <FriendInterface />
 </Container>
 <style>

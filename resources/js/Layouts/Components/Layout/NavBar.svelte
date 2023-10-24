@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { inertia, page } from '@inertiajs/svelte'
     import Logo from './Logo.svelte';
 

@@ -1,15 +1,23 @@
-<script>
+<script lang="ts">
     import { page, router } from "@inertiajs/svelte";
-    let searchTerm;
-    let isTyping;
-    function queryUsers(e) {
+    import { getContext } from "svelte";
+    import type { FriendStore, Friends } from "../../../stores/friendStore";
+    let searchTerm: string;
+    let isTyping: boolean;
+    let friendStore = getContext<FriendStore<Friends>>('friends');
+
+    function queryUsers(): void {
         if (!isTyping) {
             setTimeout(() => {
                 isTyping = false
-                router.visit(`/friends?search=${searchTerm}`);
+                router.visit(`/friends?search=${searchTerm}`, {only: ['user_search']});
             }, 200);
         }
         isTyping = true;
+    }
+
+    function sendFriendRequest(username: string) {
+        router.post(`/add-friend`, {username, searchTerm});
     }
 
 </script>
@@ -28,10 +36,17 @@
         <input type="text" class="user-search" bind:value={searchTerm} on:keyup={queryUsers}>
     </div>
     <div class="search-result">
-        {#each $page.props.user_search as user}
+        {#each $friendStore.user_search as user}
             <div class="user-result">
                 <img src="/storage/profile/{user.profile_pic}" alt="" class="search-profile-pic">
-                {user.name} - {user.username}
+                <div class="user-box">
+                    {user.username}
+                    <div class="add-btn">
+                        <button on:click={() => sendFriendRequest(user.username)} class="add-btn-inner">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         {/each}
     </div>
@@ -86,15 +101,31 @@
     .user-result {
         display: flex;
         background-color: var(--main-color);
-        width: 100%;
+        width: calc(100% - 8px);
         margin: 1px 0;
         align-items: center;
-        padding: 3px 0;
+        padding: 3px 5px 3px 3px;
+    }
+
+    .user-box {
+        flex-grow: 1;
+        display: flex;
+        justify-content: space-between;
     }
 
     .search-profile-pic {
         width: 40px;
         height: 40px;
         margin-right: 5px;
+    }
+
+    .add-btn {
+        margin-right: 10px;
+    }
+
+    .add-btn-inner {
+        border: none;
+        cursor: pointer;
+
     }
 </style>

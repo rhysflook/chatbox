@@ -1,5 +1,5 @@
 import { get, writable } from 'svelte/store';
-import { user } from './userStore';
+import { useUser } from './userStore';
 
 const message = writable('');
 
@@ -31,7 +31,7 @@ const createChatStore = () => {
 const chatStore = createChatStore();
 
 const joinMessageChannel = () => {
-    window.Echo.private(`message.${get(user).id}`)
+    window.Echo.private(`message.${useUser().id}`)
     .listen('.message', function (e) {
         const chat = get(chatStore);
         if (chat.recipient && e.message.sender_id == chat.recipient.id) {

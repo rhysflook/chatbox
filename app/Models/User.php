@@ -48,4 +48,8 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this->where('username', $value)->firstOrFail();
+    }
 }

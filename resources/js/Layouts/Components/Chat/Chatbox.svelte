@@ -1,9 +1,11 @@
 <script>
-    import { user } from '../../../stores/userStore';
+    import { useUser } from '../../../stores/userStore';
     import { chatStore } from '../../../stores/chatStore';
     import Message from './Message.svelte';
     import Toolbar from './Toolbar.svelte';
     import ChatEntryBox from './ChatEntryBox.svelte';
+
+    let user = useUser();
 
     function scrollToBottom(ele) {
         const scroll = () => ele.scroll({
